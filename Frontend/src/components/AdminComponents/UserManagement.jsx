@@ -117,16 +117,19 @@ export default function UserManagement() {
     }
   }
 
-  const filteredUsers = users.filter((user) => {
-    const matchSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     
-      (user.address || "").toLowerCase().includes(searchTerm.toLowerCase())
+ 
+const filteredUsers = users.filter((user) => {
+      const matchSearch =
+        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (user.address || "").toLowerCase().includes(searchTerm.toLowerCase())
+        
+      // Normalize both values for comparison
+      const normalizeRole = (role) => role.toLowerCase().replace(/\s+/g, "_")
+      const matchRole = filterRole === "all" || normalizeRole(user.role) === normalizeRole(filterRole)
       
-    const matchRole = filterRole === "all" || user.role.toLowerCase() === filterRole.toLowerCase().replace(" ", "_")
-    return matchSearch && matchRole
-  })
+      return matchSearch && matchRole
+    })
 
   return (
     <div>
@@ -193,7 +196,7 @@ export default function UserManagement() {
                   onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                 >
-                  <option value="Normal User">Normal user</option>
+                  <option value="Normal User">normal user</option>
                   <option value="admin">Admin</option>
                   <option value="store_owner">store_owner</option>
                   
@@ -238,7 +241,7 @@ export default function UserManagement() {
             <option value="Normal User">Normal User</option>
             <option value="admin">Admin</option>
             <option value="store_owner">Store Owner</option>
-            <option value="System Administrator">System Administrator</option>
+           
           </select>
         </div>
       </div>
